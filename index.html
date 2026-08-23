@@ -13,7 +13,6 @@
             --border-color: rgba(0, 0, 0, 0.06);
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-
         [data-theme="dark"] {
             --bg-color: #0d0d0d;
             --text-color: #ffffff;
@@ -22,160 +21,56 @@
             --border-color: rgba(255, 255, 255, 0.08);
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: var(--bg-color); color: var(--text-color);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
-
         .app-container {
-            width: 100%;
-            max-width: 420px;
-            min-height: 100vh;
-            background-color: var(--bg-color);
-            box-sizing: border-box;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow);
+            width: 100%; max-width: 420px; min-height: 100vh;
+            background-color: var(--bg-color); box-sizing: border-box;
+            display: flex; flex-direction: column; box-shadow: var(--shadow); position: relative;
         }
-
         @media (min-width: 480px) {
-            .app-container {
-                min-height: 850px;
-                border-radius: 24px;
-                overflow: hidden;
-                border: 1px solid var(--border-color);
-            }
+            .app-container { min-height: 850px; border-radius: 24px; border: 1px solid var(--border-color); overflow: hidden; }
         }
-
         header {
-            background-color: var(--header-bg);
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            background-color: var(--header-bg); padding: 16px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10;
         }
-
-        header h1 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
-
+        header h1 { margin: 0; font-size: 17px; font-weight: 600; }
         .controls select {
-            background: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px 10px;
-            outline: none;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
+            background: transparent; color: var(--text-color); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 6px 10px; outline: none; cursor: pointer; font-size: 12px;
         }
-
-        .content {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            padding-bottom: 40px;
-        }
-
+        .content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 14px; }
         .service-card {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
+            background-color: var(--card-bg); padding: 20px; border-radius: 16px;
+            text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow);
         }
-
-        .service-card h2 { margin: 0 0 6px 0; font-size: 16px; font-weight: 600; }
+        .service-card h2 { margin: 0 0 6px 0; font-size: 16px; }
         .service-card p { margin: 0 0 14px 0; font-size: 13px; opacity: 0.65; }
-
         .contact-btn {
-            display: inline-block;
-            background-color: var(--text-color);
-            color: var(--bg-color);
-            padding: 9px 22px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 12px;
-            transition: opacity 0.2s;
+            background-color: var(--text-color); color: var(--bg-color);
+            padding: 9px 22px; border-radius: 20px; border: none; cursor: pointer; font-weight: 600; font-size: 12px;
         }
-        .contact-btn:active { opacity: 0.8; }
-
         .phone-link {
-            display: block;
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 700;
-            margin: 10px 0;
-            letter-spacing: 0.5px;
+            display: block; color: var(--text-color); text-decoration: none;
+            font-size: 17px; font-weight: 700; margin: 10px 0;
         }
-
-        .messengers {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 15px;
-        }
-        .msg-btn {
-            padding: 11px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 12px;
-            text-align: center;
-            color: white;
-        }
-        
+        .messengers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
+        .msg-btn { padding: 11px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 12px; text-align: center; color: white; }
         .btn-viber { background-color: #7360f2; }
         .btn-wa { background-color: #25D366; }
         .btn-tg { background-color: #0088cc; }
         .btn-messenger { background-color: #0084ff; }
-
-        .lang-footer {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            opacity: 0.5;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-        .lang-footer span { cursor: pointer; }
-
-        #status-box {
-            margin-top: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #4CAF50;
-            display: none;
-        }
+        .lang-footer { margin-top: 15px; text-align: center; font-size: 11px; font-weight: 700; opacity: 0.5; display: flex; justify-content: center; gap: 8px; }
     </style>
 </head>
 <body data-theme="dark">
-
     <div class="app-container">
-        
         <header>
             <h1>CarService</h1>
             <div class="controls">
@@ -187,114 +82,78 @@
         </header>
 
         <div class="content">
-            
             <div class="service-card">
                 <h2>მოძრავი ხელოსანი</h2>
                 <p>დიაგნოსტიკა და შეკეთება</p>
                 <button class="contact-btn" onclick="createOrder('mechanic')">გამოძახება</button>
             </div>
-
             <div class="service-card">
                 <h2>ევაკუატორი</h2>
                 <p>24/7 ტრანსპორტირება</p>
                 <button class="contact-btn" onclick="createOrder('tow_truck')">გამოძახება</button>
             </div>
-
             <div class="service-card">
                 <h2>ფხიზელი მძღოლი</h2>
                 <p>უსაფრთხო მგზავრობა</p>
                 <button class="contact-btn" onclick="createOrder('sober_driver')">გამოძახება</button>
             </div>
 
-            <div id="status-box" class="service-card" style="text-align: center;">
-                <p id="status-text" style="margin:0; opacity:1;">მიმდინარეობს დაკავშირება...</p>
-            </div>
-
-            <div id="contact-section" class="service-card">
+            <div class="service-card">
                 <h2 style="margin-bottom: 12px;">კონტაქტი</h2>
-                
                 <a href="tel:+995591622929" class="phone-link">591 62 29 29</a>
                 <a href="tel:+995592078078" class="phone-link">592 07 80 78</a>
                 <a href="tel:+995555160552" class="phone-link">555 16 05 52</a>
-
                 <div class="messengers">
                     <a href="viber://chat?number=+995555160552" class="msg-btn btn-viber">Viber</a>
                     <a href="https://wa.me/995555160552" class="msg-btn btn-wa">WhatsApp</a>
                     <a href="https://t.me/+995555160552" class="msg-btn btn-tg">Telegram</a>
                     <a href="https://www.facebook.com/profile.php?id=61589185375942" class="msg-btn btn-messenger">Messenger</a>
                 </div>
-
                 <div class="lang-footer">
                     <span>GEORGIAN</span> | <span>ENGLISH</span> | <span>RUSSIAN</span>
                 </div>
             </div>
-
         </div>
-
     </div>
 
     <script>
-        const BACKEND_URL = "https://carservice-b3ih.onrender.com";
+        const BACKEND_URL = "https://carservice-b3ih.onrender.com"\;
         const WS_URL = "wss://carservice-b3ih.onrender.com/ws/";
-
         let currentSessionId = null;
-        let socket = null;
-        let heartbeatTimer = null;
+        let clientSocket = null;
 
-        function changeTheme(themeName) {
-            document.body.setAttribute('data-theme', themeName);
-        }
+        function changeTheme(themeName) { document.body.setAttribute('data-theme', themeName); }
 
         async function createOrder(serviceType) {
-            const statusBox = document.getElementById('status-box');
-            const statusText = document.getElementById('status-text');
-            
-            statusBox.style.display = 'block';
-            statusText.innerText = "სერვერთან დაკავშირება...";
-
             try {
                 let response = await fetch(`${BACKEND_URL}/api/create-order`, { method: "POST" });
                 let data = await response.json();
                 currentSessionId = data.session_id;
+                alert(`შეკვეთა მიღებულია! სესია: ${currentSessionId}`);
                 
-                statusText.innerText = `შეკვეთა აქტიურია! სესია: ${currentSessionId}`;
-                connectWebSocket(currentSessionId);
+                startClientLocationSharing(currentSessionId);
             } catch (error) {
-                statusText.innerText = "სერვერი იღვიძებს, ვცდილობ ხელახლა...";
-                setTimeout(() => createOrder(serviceType), 3000);
+                console.log("სერვერის შეცდომა");
             }
         }
 
-        function connectWebSocket(sessionId) {
-            socket = new WebSocket(`${WS_URL}${sessionId}`);
+        function startClientLocationSharing(sessionId) {
+            clientSocket = new WebSocket(`${WS_URL}${sessionId}`);
 
-            socket.onopen = function() {
-                console.log("ლაივ კავშირი სტაბილურია!");
-                startHeartbeat();
-            };
-
-            socket.onmessage = function(event) {
-                let data = JSON.parse(event.data);
-                if (data.type === "pong") return;
-                console.log("მიღებული კოორდინატი:", data);
-            };
-
-            socket.onclose = function() {
-                console.log("კავშირი შეწყდა. აღდგენა...");
-                clearInterval(heartbeatTimer);
-                setTimeout(() => connectWebSocket(sessionId), 3000);
-            };
-        }
-
-        function startHeartbeat() {
-            clearInterval(heartbeatTimer);
-            heartbeatTimer = setInterval(() => {
-                if (socket && socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify({ type: "ping" }));
+            clientSocket.onopen = function() {
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.watchPosition((pos) => {
+                        if (clientSocket.readyState === WebSocket.OPEN) {
+                            clientSocket.send(JSON.stringify({
+                                sender: "client",
+                                lat: pos.coords.latitude,
+                                lng: pos.coords.longitude
+                            }));
+                        }
+                    }, null, { enableHighAccuracy: true });
                 }
-            }, 25000);
+            };
         }
     </script>
-
 </body>
 </html>
