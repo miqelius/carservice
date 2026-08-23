@@ -100,7 +100,6 @@
             text-align: center;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
         }
 
         .service-card h2 { margin: 0 0 6px 0; font-size: 16px; font-weight: 600; }
@@ -112,7 +111,8 @@
             color: var(--bg-color);
             padding: 9px 22px;
             border-radius: 20px;
-            text-decoration: none;
+            border: none;
+            cursor: pointer;
             font-weight: 600;
             font-size: 12px;
             transition: opacity 0.2s;
@@ -162,9 +162,17 @@
             gap: 8px;
         }
         .lang-footer span { cursor: pointer; }
+
+        #status-box {
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4CAF50;
+            display: none;
+        }
     </style>
 </head>
-<body data-theme="dark"> <!-- ნაგულისხმევად მუქი თემა -->
+<body data-theme="dark">
 
     <div class="app-container">
         
@@ -183,19 +191,23 @@
             <div class="service-card">
                 <h2>მოძრავი ხელოსანი</h2>
                 <p>დიაგნოსტიკა და შეკეთება</p>
-                <a href="#contact-section" class="contact-btn">დაკავშირება</a>
+                <button class="contact-btn" onclick="createOrder('mechanic')">გამოძახება</button>
             </div>
 
             <div class="service-card">
                 <h2>ევაკუატორი</h2>
                 <p>24/7 ტრანსპორტირება</p>
-                <a href="#contact-section" class="contact-btn">დაკავშირება</a>
+                <button class="contact-btn" onclick="createOrder('tow_truck')">გამოძახება</button>
             </div>
 
             <div class="service-card">
                 <h2>ფხიზელი მძღოლი</h2>
                 <p>უსაფრთხო მგზავრობა</p>
-                <a href="#contact-section" class="contact-btn">დაკავშირება</a>
+                <button class="contact-btn" onclick="createOrder('sober_driver')">გამოძახება</button>
+            </div>
+
+            <div id="status-box" class="service-card" style="text-align: center;">
+                <p id="status-text" style="margin:0; opacity:1;">მიმდინარეობს დაკავშირება...</p>
             </div>
 
             <div id="contact-section" class="service-card">
@@ -222,8 +234,65 @@
     </div>
 
     <script>
+        const BACKEND_URL = "https://carservice-b3ih.onrender.com";
+        const WS_URL = "wss://carservice-b3ih.onrender.com/ws/";
+
+        let currentSessionId = null;
+        let socket = null;
+        let heartbeatTimer = null;
+
         function changeTheme(themeName) {
             document.body.setAttribute('data-theme', themeName);
+        }
+
+        async function createOrder(serviceType) {
+            const statusBox = document.getElementById('status-box');
+            const statusText = document.getElementById('status-text');
+            
+            statusBox.style.display = 'block';
+            statusText.innerText = "სერვერთან დაკავშირება...";
+
+            try {
+                let response = await fetch(`${BACKEND_URL}/api/create-order`, { method: "POST" });
+                let data = await response.json();
+                currentSessionId = data.session_id;
+                
+                statusText.innerText = `შეკვეთა აქტიურია! სესია: ${currentSessionId}`;
+                connectWebSocket(currentSessionId);
+            } catch (error) {
+                statusText.innerText = "სერვერი იღვიძებს, ვცდილობ ხელახლა...";
+                setTimeout(() => createOrder(serviceType), 3000);
+            }
+        }
+
+        function connectWebSocket(sessionId) {
+            socket = new WebSocket(`${WS_URL}${sessionId}`);
+
+            socket.onopen = function() {
+                console.log("ლაივ კავშირი სტაბილურია!");
+                startHeartbeat();
+            };
+
+            socket.onmessage = function(event) {
+                let data = JSON.parse(event.data);
+                if (data.type === "pong") return;
+                console.log("მიღებული კოორდინატი:", data);
+            };
+
+            socket.onclose = function() {
+                console.log("კავშირი შეწყდა. აღდგენა...");
+                clearInterval(heartbeatTimer);
+                setTimeout(() => connectWebSocket(sessionId), 3000);
+            };
+        }
+
+        function startHeartbeat() {
+            clearInterval(heartbeatTimer);
+            heartbeatTimer = setInterval(() => {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({ type: "ping" }));
+                }
+            }, 25000);
         }
     </script>
 
