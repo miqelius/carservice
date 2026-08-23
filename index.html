@@ -3,165 +3,1058 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CarService Online</title>
+    <meta name="theme-color" content="#0d0d0d">
+    <title>CarService</title>
+
     <style>
         :root {
-            --bg-color: #f2f2f7;
-            --text-color: #000000;
-            --card-bg: #ffffff;
-            --header-bg: rgba(255, 255, 255, 0.9);
-            --border-color: rgba(0, 0, 0, 0.06);
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --bg: #0d0d0d;
+            --card: #191919;
+            --text: #ffffff;
+            --muted: #999999;
+            --border: rgba(255,255,255,.08);
+            --button: #ffffff;
+            --button-text: #000000;
+            --green: #25d366;
         }
-        [data-theme="dark"] {
-            --bg-color: #0d0d0d;
-            --text-color: #ffffff;
-            --card-bg: #1a1a1a;
-            --header-bg: rgba(26, 26, 26, 0.9);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+        * {
+            box-sizing: border-box;
         }
+
         body {
-            margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color); color: var(--text-color);
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            margin: 0;
+            min-height: 100vh;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+            background: var(--bg);
+            color: var(--text);
         }
-        .app-container {
-            width: 100%; max-width: 420px; min-height: 100vh;
-            background-color: var(--bg-color); box-sizing: border-box;
-            display: flex; flex-direction: column; box-shadow: var(--shadow); position: relative;
+
+        .app {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            margin: auto;
+            padding-bottom: 30px;
         }
-        @media (min-width: 480px) {
-            .app-container { min-height: 850px; border-radius: 24px; border: 1px solid var(--border-color); overflow: hidden; }
-        }
+
         header {
-            background-color: var(--header-bg); padding: 16px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 10;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(13,13,13,.94);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
         }
-        header h1 { margin: 0; font-size: 17px; font-weight: 600; }
-        .controls select {
-            background: transparent; color: var(--text-color); border: 1px solid var(--border-color);
-            border-radius: 8px; padding: 6px 10px; outline: none; cursor: pointer; font-size: 12px;
+
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
         }
-        .content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 14px; }
+
+        .theme-btn {
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            border-radius: 10px;
+            padding: 8px 11px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .hero {
+            padding: 28px 20px 10px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .service-card,
+        .contact-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 14px;
+        }
+
         .service-card {
-            background-color: var(--card-bg); padding: 20px; border-radius: 16px;
-            text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow);
+            text-align: center;
         }
-        .service-card h2 { margin: 0 0 6px 0; font-size: 16px; }
-        .service-card p { margin: 0 0 14px 0; font-size: 13px; opacity: 0.65; }
-        .contact-btn {
-            background-color: var(--text-color); color: var(--bg-color);
-            padding: 11px 24px; border-radius: 20px; border: none; cursor: pointer; font-weight: 600; font-size: 13px;
+
+        .service-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
         }
-        .status-badge {
-            margin-top: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); color: #4CAF50;
-            border-radius: 10px; font-size: 13px; font-weight: 600; display: none;
+
+        .service-card h3,
+        .contact-card h3 {
+            margin: 0 0 7px;
+            font-size: 18px;
         }
-        .phone-link { display: block; color: var(--text-color); text-decoration: none; font-size: 17px; font-weight: 700; margin: 10px 0; }
-        .messengers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
-        .msg-btn { padding: 11px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 12px; text-align: center; color: white; }
-        .btn-viber { background-color: #7360f2; }
-        .btn-wa { background-color: #25D366; }
-        .btn-tg { background-color: #0088cc; }
-        .btn-messenger { background-color: #0084ff; }
-        .lang-footer { margin-top: 15px; text-align: center; font-size: 11px; font-weight: 700; opacity: 0.5; display: flex; justify-content: center; gap: 8px; }
+
+        .service-card p {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .call-btn {
+            width: 100%;
+            padding: 14px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--button);
+            color: var(--button-text);
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .call-btn:active {
+            transform: scale(.98);
+        }
+
+        .status {
+            display: none;
+            margin-top: 13px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(37,211,102,.10);
+            color: #4ade80;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .phone {
+            display: block;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 800;
+            padding: 9px 0;
+        }
+
+        .messengers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-top: 12px;
+        }
+
+        .messenger {
+            padding: 12px 8px;
+            border-radius: 11px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .viber {
+            background: #7360f2;
+        }
+
+        .whatsapp {
+            background: #25d366;
+        }
+
+        .telegram {
+            background: #0088cc;
+        }
+
+        .messenger-btn {
+            background: #1877f2;
+        }
+
+        .languages {
+            margin-top: 25px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .4px;
+        }
+
+        .languages button {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 4px 3px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .languages button.active {
+            color: white;
+        }
+
+        .separator {
+            color: #555;
+        }
+
+        .footer {
+            text-align: center;
+            color: #555;
+            font-size: 11px;
+            margin-top: 20px;
+        }
+
+        .location-box {
+            display: none;
+            margin-top: 15px;
+            padding: 14px;
+            border-radius: 12px;
+            background: #101010;
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .location-title {
+            color: #4ade80;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 520px) {
+            body {
+                padding: 20px 0;
+            }
+
+            .app {
+                min-height: calc(100vh - 40px);
+                border: 1px solid var(--border);
+                border-radius: 24px;
+                overflow: hidden;
+            }
+        }
     </style>
 </head>
-<body data-theme="dark">
-    <div class="app-container">
-        <header>
-            <h1>CarService</h1>
-            <div class="controls">
-                <select onchange="changeTheme(this.value)">
-                    <option value="light">Light</option>
-                    <option value="dark" selected>Dark</option>
-                </select>
-            </div>
-        </header>
 
-        <div class="content">
-            <div class="service-card">
-                <h2>მოძრავი ხელოსანი</h2>
-                <p>დიაგნოსტიკა და შეკეთება</p>
-                <button class="contact-btn" onclick="startOrder('მოძრავი ხელოსანი')">გამოძახება</button>
-                <div id="status-mechanic" class="status-badge">📍 ლოკაცია იგზავნება მძღოლთან...</div>
-            </div>
-            <div class="service-card">
-                <h2>ევაკუატორი</h2>
-                <p>24/7 ტრანსპორტირება</p>
-                <button class="contact-btn" onclick="startOrder('ევაკუატორი')">გამოძახება</button>
-                <div id="status-tow_truck" class="status-badge">📍 ლოკაცია იგზავნება მძღოლთან...</div>
-            </div>
-            <div class="service-card">
-                <h2>ფხიზელი მძღოლი</h2>
-                <p>უსაფრთხო მგზავრობა</p>
-                <button class="contact-btn" onclick="startOrder('ფხიზელი მძღოლი')">გამოძახება</button>
-                <div id="status-sober_driver" class="status-badge">📍 ლოკაცია იგზავნება მძღოლთან...</div>
+<body>
+
+<div class="app">
+
+    <header>
+        <div class="logo">🚗 CarService</div>
+
+        <button class="theme-btn" onclick="toggleTheme()" id="themeButton">
+            ☀️
+        </button>
+    </header>
+
+    <section class="hero">
+        <h2 data-i18n="heroTitle">მანქანის დახმარება 24/7</h2>
+        <p data-i18n="heroText">
+            სწრაფად გამოიძახე საჭირო სერვისი
+        </p>
+    </section>
+
+    <main class="content">
+
+        <!-- MOVING MECHANIC -->
+        <div class="service-card">
+
+            <div class="service-icon">🔧</div>
+
+            <h3 data-i18n="mechanicTitle">
+                მოძრავი ხელოსანი
+            </h3>
+
+            <p data-i18n="mechanicText">
+                დიაგნოსტიკა და ავტომობილის ადგილზე შეკეთება
+            </p>
+
+            <button
+                class="call-btn"
+                id="mechanicButton"
+                onclick="startOrder('mechanic')"
+                data-i18n="callButton">
+                გამოძახება
+            </button>
+
+            <div class="status" id="mechanicStatus">
+                📍 <span data-i18n="locationSending">
+                    ლოკაცია იგზავნება მძღოლთან...
+                </span>
             </div>
 
-            <div class="service-card">
-                <h2 style="margin-bottom: 12px;">კონტაქტი</h2>
-                <a href="tel:+995591622929" class="phone-link">591 62 29 29</a>
-                <a href="tel:+995592078078" class="phone-link">592 07 80 78</a>
-                <a href="tel:+995555160552" class="phone-link">555 16 05 52</a>
-                <div class="messengers">
-                    <a href="viber://chat?number=+995555160552" class="msg-btn btn-viber">Viber</a>
-                    <a href="https://wa.me/995555160552" class="msg-btn btn-wa">WhatsApp</a>
-                    <a href="https://t.me/+995555160552" class="msg-btn btn-tg">Telegram</a>
-                    <a href="https://www.facebook.com/profile.php?id=61589185375942" class="msg-btn btn-messenger">Messenger</a>
-                </div>
-                <div class="lang-footer">
-                    <span>GEORGIAN</span> | <span>ENGLISH</span> | <span>RUSSIAN</span>
-                </div>
-            </div>
         </div>
-    </div>
 
-    <script>
-        const WS_URL = "wss://carservice-b3ih.onrender.com/ws/live";
-        const clientId = "client_" + Math.random().toString(36).substr(2, 6);
-        let clientSocket = null;
 
-        function changeTheme(themeName) { document.body.setAttribute('data-theme', themeName); }
+        <!-- TOW TRUCK -->
+        <div class="service-card">
 
-        function startOrder(serviceName) {
-            // ვმალავთ ყველა სტატუსს და ვრთავთ არჩეულს
-            document.querySelectorAll('.status-badge').forEach(el => el.style.display = 'none');
-            
-            // ვპოულობთ შესაბამის ღილაკს და ვრთავთ სტატუსს
-            event.target.style.display = 'none';
-            
-            // ვაჩვენებთ შესაბამის შეტყობინებას
-            if(serviceName === 'მოძრავი ხელოსანი') document.getElementById('status-mechanic').style.display = 'block';
-            if(serviceName === 'ევაკუატორი') document.getElementById('status-tow_truck').style.display = 'block';
-            if(serviceName === 'ფხიზელი მძღოლი') document.getElementById('status-sober_driver').style.display = 'block';
+            <div class="service-icon">🚛</div>
 
-            // ვუკავშირდებით ვებ-სოკეტს
-            clientSocket = new WebSocket(WS_URL);
+            <h3 data-i18n="towTitle">
+                ევაკუატორი
+            </h3>
 
-            clientSocket.onopen = function() {
-                if ("geolocation" in navigator) {
-                    navigator.geolocation.watchPosition((pos) => {
-                        if (clientSocket.readyState === WebSocket.OPEN) {
-                            clientSocket.send(JSON.stringify({
-                                clientId: clientId,
-                                service: serviceName,
-                                lat: pos.coords.latitude,
-                                lng: pos.coords.longitude,
-                                time: new Date().toLocaleTimeString()
-                            }));
-                        }
-                    }, (err) => {
-                        alert("გთხოვთ, ჩართოთ GPS ლოკაცია ტელეფონში!");
-                    }, { enableHighAccuracy: true });
-                } else {
-                    alert("თქვენი ბრაუზერი არ მხარს უჭერს ევროპულ გეოლოკაციას.");
-                }
-            };
+            <p data-i18n="towText">
+                ავტომობილის უსაფრთხო ტრანსპორტირება 24/7
+            </p>
+
+            <button
+                class="call-btn"
+                id="towButton"
+                onclick="startOrder('tow')"
+                data-i18n="callButton">
+                გამოძახება
+            </button>
+
+            <div class="status" id="towStatus">
+                📍 <span data-i18n="locationSending">
+                    ლოკაცია იგზავნება მძღოლთან...
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- SOBER DRIVER -->
+        <div class="service-card">
+
+            <div class="service-icon">🚘</div>
+
+            <h3 data-i18n="driverTitle">
+                ფხიზელი მძღოლი
+            </h3>
+
+            <p data-i18n="driverText">
+                უსაფრთხო გადაადგილება თქვენი ავტომობილით
+            </p>
+
+            <button
+                class="call-btn"
+                id="driverButton"
+                onclick="startOrder('driver')"
+                data-i18n="callButton">
+                გამოძახება
+            </button>
+
+            <div class="status" id="driverStatus">
+                📍 <span data-i18n="locationSending">
+                    ლოკაცია იგზავნება მძღოლთან...
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- CONTACT -->
+        <div class="contact-card">
+
+            <h3 data-i18n="contactTitle">
+                კონტაქტი
+            </h3>
+
+            <a class="phone" href="tel:+995591622929">
+                📞 591 62 29 29
+            </a>
+
+            <a class="phone" href="tel:+995592078078">
+                📞 592 07 80 78
+            </a>
+
+            <a class="phone" href="tel:+995555160552">
+                📞 555 16 05 52
+            </a>
+
+            <div class="messengers">
+
+                <a
+                    class="messenger viber"
+                    href="viber://chat?number=%2B995555160552">
+                    Viber
+                </a>
+
+                <a
+                    class="messenger whatsapp"
+                    href="https://wa.me/995555160552"
+                    target="_blank">
+                    WhatsApp
+                </a>
+
+                <a
+                    class="messenger telegram"
+                    href="https://t.me/+995555160552"
+                    target="_blank">
+                    Telegram
+                </a>
+
+                <a
+                    class="messenger messenger-btn"
+                    href="https://www.facebook.com/profile.php?id=61589185375942"
+                    target="_blank">
+                    Messenger
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- LANGUAGE -->
+        <div class="languages">
+
+            <button
+                id="lang-ka"
+                onclick="setLanguage('ka')"
+                class="active">
+                GEORGIAN
+            </button>
+
+            <span class="separator">|</span>
+
+            <button
+                id="lang-en"
+                onclick="setLanguage('en')">
+                ENGLISH
+            </button>
+
+            <span class="separator">|</span>
+
+            <button
+                id="lang-ru"
+                onclick="setLanguage('ru')">
+                RUSSIAN
+            </button>
+
+        </div>
+
+        <div class="footer">
+            © 2026 CarService
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ================================
+       WEBSOCKET
+    ================================= */
+
+    const WS_URL = "wss://carservice-b3ih.onrender.com/ws/live";
+
+    const clientId =
+        "client_" +
+        Math.random()
+            .toString(36)
+            .substring(2, 9);
+
+    let clientSocket = null;
+    let watchId = null;
+
+
+    /* ================================
+       TRANSLATIONS
+    ================================= */
+
+    const translations = {
+
+        ka: {
+
+            heroTitle:
+                "მანქანის დახმარება 24/7",
+
+            heroText:
+                "სწრაფად გამოიძახე საჭირო სერვისი",
+
+            mechanicTitle:
+                "მოძრავი ხელოსანი",
+
+            mechanicText:
+                "დიაგნოსტიკა და ავტომობილის ადგილზე შეკეთება",
+
+            towTitle:
+                "ევაკუატორი",
+
+            towText:
+                "ავტომობილის უსაფრთხო ტრანსპორტირება 24/7",
+
+            driverTitle:
+                "ფხიზელი მძღოლი",
+
+            driverText:
+                "უსაფრთხო გადაადგილება თქვენი ავტომობილით",
+
+            callButton:
+                "გამოძახება",
+
+            locationSending:
+                "ლოკაცია იგზავნება მძღოლთან...",
+
+            contactTitle:
+                "კონტაქტი"
+        },
+
+
+        en: {
+
+            heroTitle:
+                "Car Assistance 24/7",
+
+            heroText:
+                "Quickly request the service you need",
+
+            mechanicTitle:
+                "Mobile Mechanic",
+
+            mechanicText:
+                "Diagnostics and on-site vehicle repair",
+
+            towTitle:
+                "Tow Truck",
+
+            towText:
+                "Safe vehicle transportation 24/7",
+
+            driverTitle:
+                "Sober Driver",
+
+            driverText:
+                "Safe transportation with your vehicle",
+
+            callButton:
+                "Request Service",
+
+            locationSending:
+                "Your location is being sent to the driver...",
+
+            contactTitle:
+                "Contact"
+        },
+
+
+        ru: {
+
+            heroTitle:
+                "Помощь автомобилю 24/7",
+
+            heroText:
+                "Быстро вызовите необходимую услугу",
+
+            mechanicTitle:
+                "Выездной мастер",
+
+            mechanicText:
+                "Диагностика и ремонт автомобиля на месте",
+
+            towTitle:
+                "Эвакуатор",
+
+            towText:
+                "Безопасная транспортировка автомобиля 24/7",
+
+            driverTitle:
+                "Трезвый водитель",
+
+            driverText:
+                "Безопасная поездка на вашем автомобиле",
+
+            callButton:
+                "Вызвать",
+
+            locationSending:
+                "Ваше местоположение отправляется водителю...",
+
+            contactTitle:
+                "Контакты"
         }
-    </script>
+
+    };
+
+
+    /* ================================
+       LANGUAGE
+    ================================= */
+
+    function setLanguage(lang) {
+
+        const dictionary = translations[lang];
+
+        document
+            .querySelectorAll("[data-i18n]")
+            .forEach(element => {
+
+                const key =
+                    element.getAttribute("data-i18n");
+
+                if (dictionary[key]) {
+                    element.textContent =
+                        dictionary[key];
+                }
+
+            });
+
+
+        document.documentElement.lang = lang;
+
+
+        document
+            .querySelectorAll(".languages button")
+            .forEach(button => {
+                button.classList.remove("active");
+            });
+
+
+        const activeButton =
+            document.getElementById(
+                "lang-" + lang
+            );
+
+        if (activeButton) {
+            activeButton.classList.add("active");
+        }
+
+
+        localStorage.setItem(
+            "carservice-language",
+            lang
+        );
+    }
+
+
+    function loadLanguage() {
+
+        const savedLanguage =
+            localStorage.getItem(
+                "carservice-language"
+            ) || "ka";
+
+        setLanguage(savedLanguage);
+    }
+
+
+    /* ================================
+       THEME
+    ================================= */
+
+    function toggleTheme() {
+
+        const isLight =
+            document.body.classList.contains("light");
+
+        if (isLight) {
+
+            document.body.classList.remove("light");
+
+            document.documentElement.style.setProperty(
+                "--bg",
+                "#0d0d0d"
+            );
+
+            document.documentElement.style.setProperty(
+                "--card",
+                "#191919"
+            );
+
+            document.documentElement.style.setProperty(
+                "--text",
+                "#ffffff"
+            );
+
+            document.documentElement.style.setProperty(
+                "--muted",
+                "#999999"
+            );
+
+            document.documentElement.style.setProperty(
+                "--button",
+                "#ffffff"
+            );
+
+            document.documentElement.style.setProperty(
+                "--button-text",
+                "#000000"
+            );
+
+            document.getElementById(
+                "themeButton"
+            ).textContent = "☀️";
+
+            localStorage.setItem(
+                "carservice-theme",
+                "dark"
+            );
+
+        } else {
+
+            document.body.classList.add("light");
+
+            document.documentElement.style.setProperty(
+                "--bg",
+                "#f2f2f7"
+            );
+
+            document.documentElement.style.setProperty(
+                "--card",
+                "#ffffff"
+            );
+
+            document.documentElement.style.setProperty(
+                "--text",
+                "#111111"
+            );
+
+            document.documentElement.style.setProperty(
+                "--muted",
+                "#666666"
+            );
+
+            document.documentElement.style.setProperty(
+                "--button",
+                "#111111"
+            );
+
+            document.documentElement.style.setProperty(
+                "--button-text",
+                "#ffffff"
+            );
+
+            document.getElementById(
+                "themeButton"
+            ).textContent = "🌙";
+
+            localStorage.setItem(
+                "carservice-theme",
+                "light"
+            );
+        }
+    }
+
+
+    function loadTheme() {
+
+        const theme =
+            localStorage.getItem(
+                "carservice-theme"
+            ) || "dark";
+
+        if (theme === "light") {
+            toggleTheme();
+        }
+    }
+
+
+    /* ================================
+       SERVICE ORDER
+    ================================= */
+
+    function startOrder(service) {
+
+        const buttons = [
+            "mechanicButton",
+            "towButton",
+            "driverButton"
+        ];
+
+        const statuses = [
+            "mechanicStatus",
+            "towStatus",
+            "driverStatus"
+        ];
+
+
+        buttons.forEach(id => {
+
+            const button =
+                document.getElementById(id);
+
+            if (button) {
+                button.style.display = "block";
+            }
+
+        });
+
+
+        statuses.forEach(id => {
+
+            const status =
+                document.getElementById(id);
+
+            if (status) {
+                status.style.display = "none";
+            }
+
+        });
+
+
+        let buttonId;
+        let statusId;
+        let serviceName;
+
+
+        if (service === "mechanic") {
+
+            buttonId = "mechanicButton";
+            statusId = "mechanicStatus";
+            serviceName = "მოძრავი ხელოსანი";
+
+        } else if (service === "tow") {
+
+            buttonId = "towButton";
+            statusId = "towStatus";
+            serviceName = "ევაკუატორი";
+
+        } else {
+
+            buttonId = "driverButton";
+            statusId = "driverStatus";
+            serviceName = "ფხიზელი მძღოლი";
+        }
+
+
+        document.getElementById(
+            buttonId
+        ).style.display = "none";
+
+
+        document.getElementById(
+            statusId
+        ).style.display = "block";
+
+
+        connectSocket(
+            serviceName,
+            statusId
+        );
+    }
+
+
+    /* ================================
+       CONNECT TO SERVER
+    ================================= */
+
+    function connectSocket(
+        serviceName,
+        statusId
+    ) {
+
+        if (clientSocket) {
+
+            try {
+                clientSocket.close();
+            } catch (e) {}
+
+        }
+
+
+        clientSocket =
+            new WebSocket(WS_URL);
+
+
+        clientSocket.onopen = function() {
+
+            sendLocation(
+                serviceName,
+                statusId
+            );
+
+
+            if (
+                navigator.geolocation
+            ) {
+
+                if (watchId !== null) {
+
+                    navigator.geolocation.clearWatch(
+                        watchId
+                    );
+
+                }
+
+
+                watchId =
+                    navigator.geolocation.watchPosition(
+
+                        function(position) {
+
+                            sendPosition(
+                                position,
+                                serviceName
+                            );
+
+                        },
+
+                        function(error) {
+
+                            console.log(
+                                "GPS error:",
+                                error
+                            );
+
+                            alert(
+                                "გთხოვთ, დაუშვათ ლოკაციის გამოყენება."
+                            );
+
+                        },
+
+                        {
+                            enableHighAccuracy: true,
+                            maximumAge: 5000,
+                            timeout: 15000
+                        }
+                    );
+            }
+        };
+
+
+        clientSocket.onerror =
+            function(error) {
+
+                console.log(
+                    "WebSocket error:",
+                    error
+                );
+
+            };
+
+
+        clientSocket.onclose =
+            function() {
+
+                console.log(
+                    "WebSocket connection closed"
+                );
+
+            };
+    }
+
+
+    function sendLocation(
+        serviceName,
+        statusId
+    ) {
+
+        if (
+            !navigator.geolocation
+        ) {
+
+            alert(
+                "თქვენს მოწყობილობას GPS ლოკაცია არ აქვს."
+            );
+
+            return;
+        }
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                sendPosition(
+                    position,
+                    serviceName
+                );
+
+            },
+
+            function(error) {
+
+                console.log(
+                    "GPS error:",
+                    error
+                );
+
+                alert(
+                    "გთხოვთ, ჩართოთ GPS და დაუშვათ ლოკაცია."
+                );
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+    }
+
+
+    function sendPosition(
+        position,
+        serviceName
+    ) {
+
+        if (
+            !clientSocket ||
+            clientSocket.readyState !== WebSocket.OPEN
+        ) {
+            return;
+        }
+
+
+        const data = {
+
+            sender: "client",
+
+            clientId: clientId,
+
+            service: serviceName,
+
+            lat: position.coords.latitude,
+
+            lng: position.coords.longitude,
+
+            accuracy:
+                position.coords.accuracy,
+
+            time:
+                new Date().toLocaleTimeString()
+
+        };
+
+
+        clientSocket.send(
+            JSON.stringify(data)
+        );
+
+
+        console.log(
+            "Location sent:",
+            data
+        );
+    }
+
+
+    /* ================================
+       START
+    ================================= */
+
+    loadLanguage();
+    loadTheme();
+
+</script>
+
 </body>
 </html>
