@@ -3,67 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Driver Panel</title>
+    <title>Driver Live Panel</title>
     <style>
         body { margin: 0; padding: 20px; font-family: sans-serif; background: #0d0d0d; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .panel { width: 100%; max-width: 400px; background: #1a1a1a; padding: 24px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.08); }
+        .panel { width: 100%; max-width: 480px; background: #1a1a1a; padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); box-sizing: border-box; }
         input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #333; background: #252525; color: white; font-size: 16px; text-align: center; box-sizing: border-box; outline: none; }
-        button { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #0084ff; color: white; font-weight: bold; cursor: pointer; }
-        #log { margin-top: 20px; font-size: 13px; font-weight: 600; color: #4CAF50; word-break: break-all; }
+        button { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #0084ff; color: white; font-weight: bold; cursor: pointer; font-size: 15px; }
+        .client-card { background: #252525; padding: 15px; border-radius: 12px; margin-top: 12px; border: 1px solid #333; text-align: left; }
+        .client-card h3 { margin: 0 0 8px 0; color: #4CAF50; font-size: 16px; }
+        .client-card p { margin: 4px 0; font-size: 13px; opacity: 0.8; }
+        .map-btn { display: inline-block; margin-top: 10px; padding: 8px 16px; background: #4CAF50; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 13px; }
+        #clientsList { margin-top: 15px; max-height: 400px; overflow-y: auto; }
     </style>
 </head>
 <body>
     <div class="panel" id="loginBox">
-        <h2>ადმინის ავტორიზაცია</h2>
-        <input type="password" id="pinInput" placeholder="პინ-კოდი">
+        <h2 style="text-align:center;">მძღოლის ავტორიზაცია</h2>
+        <input type="password" id="pinInput" placeholder="პინ-კოდი (7777)">
         <button onclick="checkPin()">შესვლა</button>
     </div>
 
     <div class="panel" id="mainPanel" style="display:none;">
-        <h2>მძღოლის პანელი</h2>
-        <input type="text" id="sessionIdInput" placeholder="სესიის ნომერი (მაგ: a8f94b2e)">
-        <button onclick="startTracking()">კლიენტის ძებნა</button>
-        <div id="log">მზადაა</div>
+        <h2 style="text-align:center; margin-top:0;">აქტიური გამოძახებები</h2>
+        <div id="clientsList" style="text-align: center; color: #888;">ველოდებით კლიენტებს...</div>
     </div>
 
     <script>
         const PIN = "7777";
-        const WS_URL = "wss://carservice-b3ih.onrender.com/ws/";
-        let socket = null;
+        const WS_URL = "wss://carservice-b3ih.onrender.com/ws/live";
+        let clients = {};
 
         function checkPin() {
             if(document.getElementById('pinInput').value === PIN) {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('mainPanel').style.display = 'block';
+                startListening();
             } else {
                 alert("არასწორი პინ-კოდი!");
             }
         }
 
-        function startTracking() {
-            const sessionId = document.getElementById('sessionIdInput').value.trim();
-            if (!sessionId) return alert("შეიყვანეთ სესია!");
-
-            document.getElementById('log').innerText = "დაკავშირება...";
-            socket = new WebSocket(WS_URL + sessionId);
-
-            socket.onopen = () => {
-                document.getElementById('log').innerText = "კავშირი დამყარებულია. ველოდებით კლიენტს...";
-            };
+        function startListening() {
+            const socket = new WebSocket(WS_URL);
 
             socket.onmessage = function(event) {
-                let data = JSON.parse(event.data);
-                if (data.sender === "client") {
-                    document.getElementById('log').innerHTML = 
-                        `📍 კლიენტის ლოკაცია:<br>` +
-                        `Lat: <b>${data.lat.toFixed(5)}</b><br>` +
-                        `Lng: <b>${data.lng.toFixed(5)}</b>`;
+                try {
+                    let data = JSON.parse(event.data);
+                    if (data.clientId && data.lat && data.lng) {
+                        clients[data.clientId] = data;
+                        renderClients();
+                    }
+                } catch (e) {
+                    console.log("Error parsing message");
                 }
             };
+        }
 
-            socket.onclose = () => {
-                document.getElementById('log').innerText = "კავშირი შეწყდა.";
-            };
+        function renderClients() {
+            let container = document.getElementById('clientsList');
+            let keys = Object.keys(clients);
+
+            if (keys.length === 0) {
+                container.innerHTML = "ველოდებით კლიენტებს...";
+                return;
+            }
+
+            container.innerHTML = "";
+            keys.forEach(id => {
+                let c = clients[id];
+                let card = document.createElement('div');
+                card.className = 'client-card';
+                card.innerHTML = `
+                    <h3>სერვისი: ${c.service}</h3>
+                    <p><b>დრო:</b> ${c.time || 'ახლახანს'}</p>
+                    <p><b>კოორდინატები:</b> ${c.lat.toFixed(5)}, ${c.lng.toFixed(5)}</p>
+                    <a href="https://www.google.com/maps?q=${c.lat},${c.lng}" target="_blank" class="map-btn">📍 რუკაზე ნახვა (Google Maps)</a>
+                `;
+                container.appendChild(card);
+            });
         }
     </script>
 </body>

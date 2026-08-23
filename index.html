@@ -54,12 +54,13 @@
         .service-card p { margin: 0 0 14px 0; font-size: 13px; opacity: 0.65; }
         .contact-btn {
             background-color: var(--text-color); color: var(--bg-color);
-            padding: 9px 22px; border-radius: 20px; border: none; cursor: pointer; font-weight: 600; font-size: 12px;
+            padding: 11px 24px; border-radius: 20px; border: none; cursor: pointer; font-weight: 600; font-size: 13px;
         }
-        .phone-link {
-            display: block; color: var(--text-color); text-decoration: none;
-            font-size: 17px; font-weight: 700; margin: 10px 0;
+        .status-badge {
+            margin-top: 15px; padding: 10px; background: rgba(76, 175, 80, 0.1); color: #4CAF50;
+            border-radius: 10px; font-size: 13px; font-weight: 600; display: none;
         }
+        .phone-link { display: block; color: var(--text-color); text-decoration: none; font-size: 17px; font-weight: 700; margin: 10px 0; }
         .messengers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px; }
         .msg-btn { padding: 11px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 12px; text-align: center; color: white; }
         .btn-viber { background-color: #7360f2; }
@@ -85,17 +86,20 @@
             <div class="service-card">
                 <h2>მოძრავი ხელოსანი</h2>
                 <p>დიაგნოსტიკა და შეკეთება</p>
-                <button class="contact-btn" onclick="createOrder('mechanic')">გამოძახება</button>
+                <button class="contact-btn" onclick="startOrder('მოძრავი ხელოსანი')">გამოძახება</button>
+                <div id="status-mechanic" class="status-badge">📍 ლოკაცია იგზავნება მძღოლთან...</div>
             </div>
             <div class="service-card">
                 <h2>ევაკუატორი</h2>
                 <p>24/7 ტრანსპორტირება</p>
-                <button class="contact-btn" onclick="createOrder('tow_truck')">გამოძახება</button>
+                <button class="contact-btn" onclick="startOrder('ევაკუატორი')">გამოძახება</button>
+                <div id="status-tow_truck" class="status-badge">📍 ლოკაცია იგზავნება მძღოლთან...</div>
             </div>
             <div class="service-card">
                 <h2>ფხიზელი მძღოლი</h2>
                 <p>უსაფრთხო მგზავრობა</p>
-                <button class="contact-btn" onclick="createOrder('sober_driver')">გამოძახება</button>
+                <button class="contact-btn" onclick="startOrder('ფხიზელი მძღოლი')">გამოძახება</button>
+                <div id="status-sober_driver" class="status-badge">📍 ლოკაცია იგზავნება მძღოლთან...</div>
             </div>
 
             <div class="service-card">
@@ -117,40 +121,44 @@
     </div>
 
     <script>
-        const BACKEND_URL = "https://carservice-b3ih.onrender.com"\;
-        const WS_URL = "wss://carservice-b3ih.onrender.com/ws/";
-        let currentSessionId = null;
+        const WS_URL = "wss://carservice-b3ih.onrender.com/ws/live";
+        const clientId = "client_" + Math.random().toString(36).substr(2, 6);
         let clientSocket = null;
 
         function changeTheme(themeName) { document.body.setAttribute('data-theme', themeName); }
 
-        async function createOrder(serviceType) {
-            try {
-                let response = await fetch(`${BACKEND_URL}/api/create-order`, { method: "POST" });
-                let data = await response.json();
-                currentSessionId = data.session_id;
-                alert(`შეკვეთა მიღებულია! სესია: ${currentSessionId}`);
-                
-                startClientLocationSharing(currentSessionId);
-            } catch (error) {
-                console.log("სერვერის შეცდომა");
-            }
-        }
+        function startOrder(serviceName) {
+            // ვმალავთ ყველა სტატუსს და ვრთავთ არჩეულს
+            document.querySelectorAll('.status-badge').forEach(el => el.style.display = 'none');
+            
+            // ვპოულობთ შესაბამის ღილაკს და ვრთავთ სტატუსს
+            event.target.style.display = 'none';
+            
+            // ვაჩვენებთ შესაბამის შეტყობინებას
+            if(serviceName === 'მოძრავი ხელოსანი') document.getElementById('status-mechanic').style.display = 'block';
+            if(serviceName === 'ევაკუატორი') document.getElementById('status-tow_truck').style.display = 'block';
+            if(serviceName === 'ფხიზელი მძღოლი') document.getElementById('status-sober_driver').style.display = 'block';
 
-        function startClientLocationSharing(sessionId) {
-            clientSocket = new WebSocket(`${WS_URL}${sessionId}`);
+            // ვუკავშირდებით ვებ-სოკეტს
+            clientSocket = new WebSocket(WS_URL);
 
             clientSocket.onopen = function() {
                 if ("geolocation" in navigator) {
                     navigator.geolocation.watchPosition((pos) => {
                         if (clientSocket.readyState === WebSocket.OPEN) {
                             clientSocket.send(JSON.stringify({
-                                sender: "client",
+                                clientId: clientId,
+                                service: serviceName,
                                 lat: pos.coords.latitude,
-                                lng: pos.coords.longitude
+                                lng: pos.coords.longitude,
+                                time: new Date().toLocaleTimeString()
                             }));
                         }
-                    }, null, { enableHighAccuracy: true });
+                    }, (err) => {
+                        alert("გთხოვთ, ჩართოთ GPS ლოკაცია ტელეფონში!");
+                    }, { enableHighAccuracy: true });
+                } else {
+                    alert("თქვენი ბრაუზერი არ მხარს უჭერს ევროპულ გეოლოკაციას.");
                 }
             };
         }
