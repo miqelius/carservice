@@ -1,7 +1,8 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
+import json
 
-app = FastAPI()
+app = FastAPI(title="CarService Live Server")
 
 app.add_middleware(
     CORSMiddleware,
@@ -10,6 +11,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class ConnectionManager:
     def __init__(self):
@@ -24,24 +26,50 @@ class ConnectionManager:
             self.active_connections.remove(websocket)
 
     async def broadcast(self, message: str):
+        disconnected = []
+
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except:
-                pass
+            except Exception:
+                disconnected.append(connection)
+
+        for connection in disconnected:
+            self.disconnect(connection)
+
 
 manager = ConnectionManager()
 
+
 @app.get("/")
-def read_root():
-    return {"status": "CarService Live Server is running"}
+async def root():
+    return {
+        "status": "online",
+        "service": "CarService Live Server"
+    }
+
 
 @app.websocket("/ws/live")
 async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
+
     try:
         while True:
-            data = await websocket.receive_text()
-            await manager.broadcast(data)
+            message = await websocket.receive_text()
+
+            try:
+                data = json.loads(message)
+            except json.JSONDecodeError:
+                continue
+
+            # ვამატებთ sender-ს თუ კლიენტიდან არ მოდის
+            if "sender" not in data:
+                data["sender"] = "client"
+
+            await manager.broadcast(json.dumps(data))
+
     except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+    except Exception:
         manager.disconnect(websocket)
