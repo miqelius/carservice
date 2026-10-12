@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d0d0d">
-    <title>CarService</title>
+    <title>CarService | Roadside Assistance 24/7</title>
+    <meta name="description" content="24/7 roadside assistance, mobile mechanic and tow truck service. Partner with CarService.">
 
     <style>
         :root {
@@ -38,7 +39,7 @@
 
         .app {
             width: 100%;
-            max-width: 500px;
+            max-width: 920px;
             min-height: 100vh;
             margin: auto;
             padding-bottom: 30px;
@@ -93,7 +94,8 @@
         }
 
         .service-card,
-        .contact-card {
+        .contact-card,
+        .partner-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 18px;
@@ -187,7 +189,8 @@
             background: #0088cc;
         }
 
-        .messenger-btn {
+        .messenger-btn,
+        .facebook {
             background: #1877f2;
         }
 
@@ -223,6 +226,99 @@
             color: #555;
             font-size: 11px;
             margin-top: 20px;
+        }
+
+        .partner-card {
+            margin: 0 20px 14px;
+            padding: 24px;
+            border: 1px solid rgba(183, 245, 109, .35);
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(183,245,109,.12), rgba(25,25,25,.96) 58%);
+        }
+
+        .partner-kicker {
+            color: #b7f56d;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .partner-card h2 {
+            margin: 0 0 10px;
+            font-size: clamp(22px, 4vw, 30px);
+            line-height: 1.2;
+        }
+
+        .partner-card p {
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0 0 14px;
+            font-size: 14px;
+        }
+
+        .partner-points {
+            display: grid;
+            gap: 8px;
+            padding: 0;
+            margin: 16px 0 20px;
+            list-style: none;
+        }
+
+        .partner-points li {
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .partner-points li::before {
+            content: "✓";
+            color: #b7f56d;
+            font-weight: 900;
+            margin-right: 9px;
+        }
+
+        .partner-cta {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: #b7f56d;
+            color: #10140b;
+        }
+
+        .partner-note {
+            margin: 12px 0 0 !important;
+            font-size: 11px !important;
+        }
+
+        .office-address {
+            margin-top: 15px;
+            padding: 13px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255,255,255,.03);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .office-address a {
+            display: inline-block;
+            margin-top: 4px;
+            color: var(--text);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        @media (min-width: 720px) {
+            .content {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: start;
+                gap: 14px;
+            }
+            .service-card, .contact-card { margin-bottom: 0; }
+            .partner-card, .contact-card, .languages, .footer { grid-column: 1 / -1; }
         }
 
         .location-box {
@@ -367,6 +463,20 @@
         </div>
 
 
+        <!-- PARTNER OFFER -->
+        <section class="partner-card" aria-labelledby="partnerTitle">
+            <div class="partner-kicker" data-i18n="partnerKicker">პარტნიორობა ევაკუატორის მფლობელებისთვის</div>
+            <h2 id="partnerTitle" data-i18n="partnerTitle">გაქვს ევაკუატორი? მოდი, ერთად გავზარდოთ შეკვეთები.</h2>
+            <p data-i18n="partnerText">CarService ეძებს პასუხისმგებლიან ევაკუატორის ოპერატორებს პარტნიორობისთვის. გავიაროთ შენი მომსახურების ზონა, სამუშაო საათები და გამოძახების მიღების წესი — შემდეგ მოვამზადოთ შენი სერვისის ჩართვა.</p>
+            <ul class="partner-points">
+                <li data-i18n="partnerPoint1">შენ თავად განსაზღვრავ მომსახურების ზონასა და ხელმისაწვდომობას.</li>
+                <li data-i18n="partnerPoint2">ტარიფს, შესაძლო საკომისიოსა და შეკვეთების მიღების წესს წინასწარ შევათანხმებთ.</li>
+                <li data-i18n="partnerPoint3">საუბარი პირდაპირია — გაიგებ პირობებს და მერე გადაწყვეტ, გინდა თუ არა ჩართვა.</li>
+            </ul>
+            <a class="call-btn partner-cta" href="tel:+995591622929" data-i18n="partnerCta">განვიხილოთ პარტნიორობა</a>
+            <p class="partner-note" data-i18n="partnerNote">პარტნიორობის შეთავაზებაა; შეკვეთების რაოდენობა დამოკიდებულია მომხმარებლის მოთხოვნასა და შეთანხმებულ დაფარვის არეალზე.</p>
+        </section>
+
         <!-- CONTACT -->
         <div class="contact-card">
 
@@ -375,7 +485,7 @@
             </h3>
 
             <a class="phone" href="tel:+995591622929">
-                📞 591 62 29 29
+                📞 <span data-i18n="mainPhoneLabel">პირდაპირი კავშირი</span> · 591 62 29 29
             </a>
 
             <a class="phone" href="tel:+995592078078">
@@ -403,9 +513,16 @@
 
                 <a
                     class="messenger telegram"
-                    href="https://t.me/+995555160552"
-                    target="_blank">
+                    href="https://t.me/miqelius88"
+                    target="_blank" rel="noopener noreferrer">
                     Telegram
+                </a>
+
+                <a
+                    class="messenger facebook"
+                    href="https://www.facebook.com/profile.php?id=61589185375942"
+                    target="_blank" rel="noopener noreferrer">
+                    Facebook
                 </a>
 
                 <a
@@ -415,6 +532,11 @@
                     Messenger
                 </a>
 
+            </div>
+
+            <div class="office-address">
+                <strong data-i18n="officeLabel">ოფისის მისამართი</strong><br>
+                <a href="https://maps.google.com/?q=Giorgi+Odishvili+9" target="_blank" rel="noopener noreferrer">Giorgi Odishvili #9 · <span data-i18n="mapLink">რუკაზე ნახვა</span></a>
             </div>
 
         </div>
@@ -514,7 +636,29 @@
                 "ლოკაცია იგზავნება მძღოლთან...",
 
             contactTitle:
-                "კონტაქტი"
+                "კონტაქტი",
+            partnerKicker:
+                "პარტნიორობა ევაკუატორის მფლობელებისთვის",
+            partnerTitle:
+                "გაქვს ევაკუატორი? მოდი, ერთად გავზარდოთ შეკვეთები.",
+            partnerText:
+                "CarService ეძებს პასუხისმგებლიან ევაკუატორის ოპერატორებს პარტნიორობისთვის. გავიაროთ შენი მომსახურების ზონა, სამუშაო საათები და გამოძახების მიღების წესი — შემდეგ მოვამზადოთ შენი სერვისის ჩართვა.",
+            partnerPoint1:
+                "შენ თავად განსაზღვრავ მომსახურების ზონასა და ხელმისაწვდომობას.",
+            partnerPoint2:
+                "ტარიფს, შესაძლო საკომისიოსა და შეკვეთების მიღების წესს წინასწარ შევათანხმებთ.",
+            partnerPoint3:
+                "საუბარი პირდაპირია — გაიგებ პირობებს და მერე გადაწყვეტ, გინდა თუ არა ჩართვა.",
+            partnerCta:
+                "განვიხილოთ პარტნიორობა",
+            partnerNote:
+                "პარტნიორობის შეთავაზებაა; შეკვეთების რაოდენობა დამოკიდებულია მომხმარებლის მოთხოვნასა და შეთანხმებულ დაფარვის არეალზე.",
+            mainPhoneLabel:
+                "პირდაპირი კავშირი",
+            officeLabel:
+                "ოფისის მისამართი",
+            mapLink:
+                "რუკაზე ნახვა"
         },
 
 
@@ -551,7 +695,29 @@
                 "Your location is being sent to the driver...",
 
             contactTitle:
-                "Contact"
+                "Contact",
+            partnerKicker:
+                "Tow operator partnership",
+            partnerTitle:
+                "Own a tow truck? Let’s grow the service together.",
+            partnerText:
+                "CarService is looking for reliable tow operators to partner with. Let’s discuss your service area, availability and how you handle requests, then plan how to onboard your service.",
+            partnerPoint1:
+                "You choose your coverage area and when you are available.",
+            partnerPoint2:
+                "Rates, any commission and request handling are agreed in advance.",
+            partnerPoint3:
+                "A straightforward conversation: review the terms, then decide whether to join.",
+            partnerCta:
+                "Discuss a partnership",
+            partnerNote:
+                "This is a partnership proposal. Request volume depends on customer demand and the agreed coverage area.",
+            mainPhoneLabel:
+                "Direct line",
+            officeLabel:
+                "Office address",
+            mapLink:
+                "View map"
         },
 
 
@@ -588,7 +754,29 @@
                 "Ваше местоположение отправляется водителю...",
 
             contactTitle:
-                "Контакты"
+                "Контакты",
+            partnerKicker:
+                "Партнёрство для владельцев эвакуаторов",
+            partnerTitle:
+                "У вас эвакуатор? Давайте развивать сервис вместе.",
+            partnerText:
+                "CarService ищет надёжных операторов эвакуаторов для сотрудничества. Обсудим вашу зону обслуживания, график и порядок приёма заявок, а затем подготовим подключение вашего сервиса.",
+            partnerPoint1:
+                "Вы сами определяете зону обслуживания и доступность.",
+            partnerPoint2:
+                "Тарифы, возможную комиссию и порядок заявок согласуем заранее.",
+            partnerPoint3:
+                "Всё прозрачно: сначала условия, затем ваше решение о подключении.",
+            partnerCta:
+                "Обсудить сотрудничество",
+            partnerNote:
+                "Это предложение о партнёрстве. Количество заявок зависит от спроса клиентов и согласованной зоны обслуживания.",
+            mainPhoneLabel:
+                "Прямая линия",
+            officeLabel:
+                "Адрес офиса",
+            mapLink:
+                "Посмотреть на карте"
         }
 
     };
