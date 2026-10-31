@@ -15,3 +15,7 @@ Contact configuration: `CONTACT` in `app.js` and contact links in `index.html`. 
 ## Visual
 
 `assets/tow-hero.webp` is an AI-generated illustrative marketing image, not a photograph of an operator's actual fleet. Created with the built-in image generation tool. Prompt: modern yellow flatbed recovery truck carrying a secured graphite sedan, safe roadside turnout near Tbilisi and Caucasus foothills, blue hour and amber lights, cinematic wide photograph, negative space at left, no text or logos.
+
+## Sober driver and tours
+
+Sober-driver requests require a destination and use the customer's own vehicle. Georgia tour requests require an itinerary, a current/future departure date and passenger count, plus sedan/minivan/SUV preference. All fields are included in the messenger request. Vehicle capacity, luggage, availability and price are confirmed by the operator; no booking is automatically accepted.
