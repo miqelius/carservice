@@ -12,9 +12,9 @@ Contact configuration: `CONTACT` in `app.js` and contact links in `index.html`. 
 
 `main.py` and `driver-panel-secure-777.html` are legacy live-location prototype files, unused by the static site. Do not use that prototype for customer location data: its broadcast channel has no authentication or recipient isolation.
 
-## Visual
+## Visuals
 
-`assets/tow-hero.webp` is an AI-generated illustrative marketing image, not a photograph of an operator's actual fleet. Created with the built-in image generation tool. Prompt: modern yellow flatbed recovery truck carrying a secured graphite sedan, safe roadside turnout near Tbilisi and Caucasus foothills, blue hour and amber lights, cinematic wide photograph, negative space at left, no text or logos.
+The site uses locally hosted illustrative stock photographs from Pexels, not photos of the operator's fleet. See `assets/PHOTO-CREDITS.md` for sources. The former AI-generated `tow-hero.webp` is retained but is no longer used by the page.
 
 ## Sober driver and tours
 
