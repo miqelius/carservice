@@ -3,3 +3,48 @@
 [hidden]{display:none!important}.vehicle-tags{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px}.vehicle-tags span{font-size:11px;border:1px solid var(--line);border-radius:30px;padding:4px 10px}.tour-card{grid-column:span 2;background:linear-gradient(135deg,#ffd05a16,var(--card))}#tripFields{padding:0 0 16px;border-bottom:1px solid var(--line);margin-top:8px}@media(max-width:680px){.tour-card{grid-column:auto}}
 
 .quick-services{max-width:1136px;margin:24px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:0 0}.quick-services a{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:var(--card);padding:22px;border-radius:13px}.quick-services span{color:var(--muted);font-size:10px}.quick-services strong{font-size:13px}.quick-services b{margin-left:auto;color:#a87b17}.service-card{overflow:hidden}.service-photo{width:calc(100% + 56px);max-width:none;height:180px;object-fit:cover;display:block;margin:-28px -28px 22px}.tour-card .service-photo{object-position:50% 62%}.fleet-section{border-top:1px solid var(--line)}.fleet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.fleet-card{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden;transition:transform .2s}.fleet-card:hover{transform:translateY(-4px)}.fleet-image{position:relative;height:230px;overflow:hidden}.fleet-image img{width:100%;height:100%;object-fit:cover}.fleet-image span{position:absolute;bottom:14px;left:14px;background:#101820d9;color:white;padding:5px 10px;border-radius:6px;font-size:10px}.fleet-body{padding:24px}.fleet-body h3{margin:0 0 10px}.fleet-body p{color:var(--muted);font-size:13px;min-height:64px}.fleet-body>span{font-size:11px;font-weight:750}.photo-note{font-size:11px;color:var(--muted);margin-top:20px}.photo-credit{font-size:10px}.hero-image{object-position:center 55%}.hero-shade{background:linear-gradient(90deg,rgba(9,20,30,.95),rgba(9,20,30,.7) 43%,rgba(9,20,30,.08) 85%),linear-gradient(0deg,rgba(9,20,30,.7),transparent 40%)}@media(max-width:1200px){.quick-services{margin:24px 32px 0}}@media(max-width:950px){.service-photo{width:calc(100% + 40px);margin:-20px -20px 20px}.fleet-image{height:190px}.fleet-body{padding:18px}}@media(max-width:680px){.quick-services{margin:16px 20px 0;grid-template-columns:1fr;gap:8px}.quick-services a{padding:15px}.fleet-grid{grid-template-columns:1fr}.fleet-image{height:245px}.fleet-body p{min-height:0}.hero-image{object-position:60% center}.hero-shade{background:linear-gradient(180deg,rgba(9,20,30,.95),rgba(9,20,30,.8) 48%,rgba(9,20,30,.12) 85%,rgba(9,20,30,.6))}.service-photo{height:210px}}
+
+
+/* 2026 customer-ready refinement: faster scanning, stronger CTAs and mobile form UX */
+:root{--radius:18px}
+body{font-synthesis:none}
+.hero{min-height:540px}
+.hero-content{max-width:710px}
+.hero-copy{font-size:clamp(14px,1.45vw,17px);line-height:1.7}
+.hero-actions .button{box-shadow:0 8px 24px #0000001a}
+.hero-actions .button:hover,.whatsapp:hover{filter:brightness(1.06)}
+.quick-services a:hover,.social-links a:hover{border-color:#d09c26}
+.request-card{scroll-margin-top:20px}
+.request-card input,.request-card textarea,.request-card select{min-height:46px}
+.request-card textarea{min-height:95px}
+.request-card input:focus-visible,.request-card textarea:focus-visible,.request-card select:focus-visible{outline:2px solid #d8a82e;outline-offset:1px}
+.location-button:hover{border-color:#bd8b1f;background:#ffd05a2b}
+.service-card:focus-visible,.fleet-card:focus-visible{outline:3px solid #d3a02d;outline-offset:3px}
+.mobile-bar a{min-height:48px;display:grid;place-items:center}
+@media(max-width:680px){
+  .header{gap:8px}
+  .controls{gap:6px}
+  .controls select,.controls button{padding:7px}
+  .hero{min-height:510px}
+  .hero-content{padding:30px 20px 56px}
+  .hero h1{font-size:clamp(30px,8.5vw,39px);line-height:1.14}
+  .hero-copy{line-height:1.55;margin:10px 0 0}
+  .hero-points{margin-top:17px}
+  .hero-caption{bottom:16px}
+  .quick-services{margin-top:12px}
+  .quick-services a{min-height:54px}
+  .request-layout{gap:18px}
+  .steps{display:none}
+  .request-intro .direct-number{font-size:23px}
+  .request-card{padding:20px 16px}
+  .service-photo{height:185px}
+  .two-fields{grid-template-columns:1fr}
+  .alternative-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .alternative-actions button{overflow-wrap:anywhere}
+}
+@media(max-width:380px){
+  .header .brand{font-size:18px}
+  .hero-actions{display:grid;grid-template-columns:1fr 1fr}
+  .hero-actions .button{padding:12px 7px}
+  .hero-points span:last-child{display:none}
+}
