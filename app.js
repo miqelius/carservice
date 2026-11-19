@@ -42,6 +42,6 @@ window.open(url,'_blank','noopener,noreferrer');copy();}
 $('sendViber').addEventListener('click',()=>alternative('viber'));
 $('sendMessenger').addEventListener('click',()=>alternative('messenger'));
 function localDate(){const now=new Date();return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;}
-function updateService(){const service=$('service').value;const trip=['driver','tour'].includes(service),tour=service==='tour';$('tripFields').hidden=!trip;$('tourFields').hidden=!tour;$('destination').required=trip;['tripDate','passengers'].forEach(id=>{$(id).required=tour;$(id).disabled=!tour;});$('tourVehicle').disabled=!tour;$('destination').disabled=!trip;$('tripDate').min=localDate();$('tripDate').setCustomValidity('');preview();}
+function updateService(){const service=$('service').value;const trip=['tow','transport','driver','tour'].includes(service),tour=service==='tour';$('tripFields').hidden=!trip;$('tourFields').hidden=!tour;$('destination').required=trip;$('destination').disabled=!trip;['tripDate','passengers'].forEach(id=>{$(id).required=tour;$(id).disabled=!tour;});$('tourVehicle').disabled=!tour;$('tripDate').min=localDate();$('tripDate').setCustomValidity('');preview();}
 $('service').addEventListener('change',updateService);
 setLanguage(lang);updateMap();updateService();
